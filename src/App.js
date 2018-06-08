@@ -3,13 +3,14 @@ import './App.css';
 
 function Claim(props) {
   return (
-    <div>{props.claim.content}
-      {props.children(props.claim)}
+    <div>{props.claimData.claim.content}
+      {props.claimData.renderChildren()}
     </div>
   );
 }
 
 class App extends Component {
+
 
   constructor(props) {
     super(props);
@@ -31,35 +32,45 @@ class App extends Component {
       ],
       viewState: {
         claims: [
-          {id: "main", open:true}
+          { id: "main", open: true }
         ]
       }
     };
   }
 
-  getClaimView(claim){
+  getClaimView(claim) {
     let claimView = this.state.viewState.claims.filter(c => c.id === claim.id)[0];
-    if (claimView === undefined){
+    if (claimView === undefined) {
       claimView = {}
     }
     return claimView;
   }
 
-  getChildEdges(parentClaim){
-    return this.state.edges.filter(edge => edge.parentId === parentClaim.id)
+  getClaimData(id) {
+    const claim = this.state.claims.filter(claim => claim.id === id)[0]
+
+    const claimData = {
+      claim: claim,
+      claimView: this.getClaimView(claim)
+    }
+
+    claimData.renderChildren = () => this.renderChildren(claimData);
+
+    return claimData;
   }
 
-  children(parentClaim) {
-    const childEdges = this.getChildEdges(parentClaim);
+  renderChildren(parentClaimData) {
+    const parentClaim = parentClaimData.claim;
+    const childEdges = this.state.edges.filter(edge => edge.parentId === parentClaim.id);
     const parentClaimView = this.getClaimView(parentClaim);
-    if (childEdges.length > 0 
-        && parentClaimView.open
-      ) {
+    if (childEdges.length > 0
+      && parentClaimView.open
+    ) {
       const renderedChildren = childEdges.map((edge, step) => {
-        const child = this.state.claims.filter(claim => claim.id === edge.childId)[0];
+        const childData = this.getClaimData(edge.childId);
         return (
-          <li key={child.id}>
-            {this.renderClaim(child)}
+          <li key={childData.claim.id}>
+            {this.renderClaim(childData)}
           </li>
         );
       });
@@ -73,19 +84,19 @@ class App extends Component {
     }
   }
 
-  renderClaim(claim) {
+  renderClaim(claimData) {
     return (
       <Claim
-        claim={claim}
-        children={() => this.children(claim)}
+        claimData={claimData}
       />
     );
   }
 
   render() {
+    const claimData = this.getClaimData(this.state.rootClaim.id)
     return (
       <div className="App">
-        {this.renderClaim(this.state.rootClaim)}
+        {this.renderClaim(claimData)}
       </div>
     );
   }
