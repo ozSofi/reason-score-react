@@ -25,10 +25,11 @@ class App extends Component {
         { id: "2", content: "Claim 2" }
       ],
       edges: [
-        { parentId: "1", childId: "1.1", align: "pro" }
-        , { parentId: "1", childId: "1.2", align: "con" }
-        , { parentId: "2", childId: "1.1", align: "con" }
-        , { parentId: "1.1", childId: "1.1.1", align: "pro" }
+        { parentId: "1", childId: "1.1", align: "pro", contextId: "1.1"}
+        , { parentId: "1", childId: "1.2", align: "con", contextId: "1.2"}
+        , { parentId: "2", childId: "1.1", align: "con", contextId: "1.1"}
+        , { parentId: "1.1", childId: "1.1.1", align: "pro", contextId: "1"}
+        , { parentId: "1.1", childId: "1.1.2", align: "pro", contextId: "2"}
       ],
       viewState: {
         claims: [
@@ -53,7 +54,8 @@ class App extends Component {
 
     const claimData = {
       claim: claim,
-      claimView: this.getClaimView(claim)
+      claimView: this.getClaimView(claim),
+      ancestors: []
     }
 
     claimData.renderChildren = () => this.renderChildren(claimData);
@@ -63,13 +65,18 @@ class App extends Component {
 
   renderChildren(parentClaimData) {
     const parentClaim = parentClaimData.claim;
-    const childEdges = this.state.edges.filter(edge => edge.parentId === parentClaim.id);
+    const childEdges = this.state.edges.filter(edge => edge.parentId === parentClaim.id
+      && (parentClaimData.ancestors.includes(edge.contextId)
+        || edge.contextId == edge.childId)
+    );
     const parentClaimView = this.getClaimView(parentClaim);
     if (childEdges.length > 0
       && parentClaimView.open
     ) {
       const renderedChildren = childEdges.map((edge, step) => {
         const childData = this.getClaimData(edge.childId);
+        childData.ancestors = parentClaimData.ancestors.slice();
+        childData.ancestors.push(parentClaim.id);
         return (
           <li key={childData.claim.id}>
             {this.renderClaim(childData)}
