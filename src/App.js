@@ -14,25 +14,27 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    let rootClaim = { id: "main", content: "Main Claim" };
     this.state = {
-      rootClaim: rootClaim,
+      rootClaimId: "1",
       claims: [
-        rootClaim,
-        { id: "1", content: "Claim 1" }
-        , { id: "2", content: "Claim 2" }
-        , { id: "1_1", content: "Claim 1_1" }
-        , { id: "1_2", content: "Claim 1_2" }
+        { id: "1", content: "Claim 1" },
+        { id: "1.1", content: "Claim 1.1" },
+        { id: "1.2", content: "Claim 1.2" },
+        { id: "1.1.1", content: "Claim 1.1.1" },
+        { id: "1.1.2", content: "Claim 1.1.2" },
+        { id: "2", content: "Claim 2" }
       ],
       edges: [
-        { parentId: "main", childId: "1", align: "pro" }
-        , { parentId: "main", childId: "2", align: "con" }
-        , { parentId: "1", childId: "1_1", align: "pro" }
-        , { parentId: "1", childId: "1_2", align: "con" }
+        { parentId: "1", childId: "1.1", align: "pro" }
+        , { parentId: "1", childId: "1.2", align: "con" }
+        , { parentId: "2", childId: "1.1", align: "con" }
+        , { parentId: "1.1", childId: "1.1.1", align: "pro" }
       ],
       viewState: {
         claims: [
-          { id: "main", open: true }
+          { id: "1", open: true },
+          { id: "2", open: true },
+          { id: "1.1", open: true }
         ]
       }
     };
@@ -93,7 +95,7 @@ class App extends Component {
   }
 
   render() {
-    const claimData = this.getClaimData(this.state.rootClaim.id)
+    const claimData = this.getClaimData(this.props.claimId)
     return (
       <div className="App">
         {this.renderClaim(claimData)}
