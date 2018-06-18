@@ -18,7 +18,7 @@ class App extends Component {
       rootClaimId: "1",
       claims: [
         { id: "1", content: "Tabs are better than spaces" },
-        { id: "1.1", content: "Tabs require fewer charachters" },
+        { id: "1.1", content: "Tabs require fewer characters" },
         { id: "1.2", content: "Developers that use spaces make more money" },
         { id: "1.1.1", content: "Acme is building small IOT devices so every character counts" },
         { id: "1.2.1", content: "John is looking for a high paying job" },
@@ -29,34 +29,18 @@ class App extends Component {
         { parentId: "1", childId: "1.1", align: "pro", contextId: "1" },
         { parentId: "1", childId: "1.2", align: "con", contextId: "1" },
         { parentId: "1.1", childId: "1.1.1", align: "pro", contextId: "acme" },
-        { parentId: "1.2", childId: "1.2.1", align: "pro", contextId: "john" },
+        { parentId: "1.2", childId: "1.2.1", align: "con", contextId: "john" },
         { parentId: "acme", childId: "1", align: "pro", contextId: "acme" },
         { parentId: "john", childId: "1", align: "pro", contextId: "john" }
-      ],
-      viewState: {
-        claims: [
-          { id: "1", open: true },
-          { id: "1.2", open: true },
-          { id: "1.1", open: true }
-        ]
-      }
+      ]
     };
   }
-
-  // getClaimView(claim) {
-  //   let claimView = this.state.viewState.claims.filter(c => c.id === claim.id)[0];
-  //   if (claimView === undefined) {
-  //     claimView = {}
-  //   }
-  //   return claimView;
-  // }
 
   getClaimData(id) {
     const claim = this.state.claims.filter(claim => claim.id === id)[0]
 
     const claimData = {
       claim: claim,
-      //claimView: this.getClaimView(claim),
       ancestors: []
     }
 
@@ -69,11 +53,9 @@ class App extends Component {
     const parentClaim = parentClaimData.claim;
     const childEdges = this.state.edges.filter(edge => edge.parentId === parentClaim.id
       && (parentClaimData.ancestors.includes(edge.contextId)
-        || edge.contextId == parentClaim.id)
+        || edge.contextId === parentClaim.id)
     );
-///    const parentClaimView = this.getClaimView(parentClaim);
     if (childEdges.length > 0
-//      && parentClaimView.open
     ) {
       const renderedChildren = childEdges.map((edge, step) => {
         const childData = this.getClaimData(edge.childId);
