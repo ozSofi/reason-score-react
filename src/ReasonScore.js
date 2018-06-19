@@ -1,6 +1,6 @@
 class ReasonScore {
 
-    static calculateReasonScore(id,childEdges, childScores) {
+    static calculateReasonScore(id, childEdges, childScores) {
         const score = {
             id: id,
             relevance: 1,
@@ -8,16 +8,23 @@ class ReasonScore {
             weightTotal: 0
         };
 
-        if (childEdges === undefined || childEdges.length < 1) {
+        if (childEdges === undefined
+            || childEdges.length < 1
+            || childEdges.filter(e => e.affects === "truth").length < 1) {
             score.strengthTotal = 1;
             score.weightTotal = 1;
         }
 
         for (let edge of childEdges) {
-            const childScore = childScores.filter(s => s.id = edge.childId)[0];
+            const childScore = childScores.filter(s => s.id === edge.childId)[0];
             //Process Truth child claims
             if (edge.affects === "truth") {
-                const weight = Math.max(0, childScore.score) * childScore.relevance;
+                let weight = 0;
+                if (edge.reversable){
+                    weight = childScore.score * childScore.relevance;
+                } else {
+                    weight = Math.max(0, childScore.score) * childScore.relevance;
+                }
                 score.weightTotal += weight;
                 if (edge.pro) {
                     score.strengthTotal += weight * childScore.score;
@@ -36,7 +43,13 @@ class ReasonScore {
             }
 
         }
-        score.score = score.strengthTotal / score.weightTotal;
+
+        if (score.weightTotal === 0) {
+            score.score = 0
+        } else {
+            score.score = score.strengthTotal / score.weightTotal;
+        }
+        
         return score;
     }
 }

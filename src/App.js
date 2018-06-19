@@ -5,8 +5,8 @@ import ReasonScore from './ReasonScore.js';
 
 function Claim(props) {
   return (
-    <div>{props.claimData.claim.content}
-      {props.claimData.renderChildren()}
+    <div>{Math.round(props.claimViewModel.contextState.score.score*100)}%  {props.claimViewModel.claim.content}
+      {props.claimViewModel.renderChildren()}
     </div>
   );
 }
@@ -29,10 +29,10 @@ class App extends Component {
       edges: [
         { parentId: "1", childId: "1.1", pro: true, contextId: "1", affects: "truth" },
         { parentId: "1", childId: "1.2", pro: false, contextId: "1", affects: "truth" },
-        { parentId: "1.1", childId: "1.1.1", pro: true, contextId: "acme", affects: "truth" },
-        { parentId: "1.2", childId: "1.2.1", pro: false, contextId: "john", affects: "truth" },
-        { parentId: "acme", childId: "1", pro: true, contextId: "acme", affects: "relevance" },
-        { parentId: "john", childId: "1", pro: true, contextId: "john", affects: "relevance" }
+        { parentId: "1.1", childId: "1.1.1", pro: true, contextId: "acme", affects: "relevance" },
+        { parentId: "1.2", childId: "1.2.1", pro: true, contextId: "john", affects: "relevance" },
+        { parentId: "acme", childId: "1", pro: true, contextId: "acme", affects: "truth" },
+        { parentId: "john", childId: "1", pro: true, contextId: "john", affects: "truth", reversable:true }
       ],
       contextStates: []
     };
@@ -40,11 +40,13 @@ class App extends Component {
     //Build ContextState
     const topClaim = this.state.claims.filter(claim => claim.id === this.props.claimId)[0];
     this.buildContextState(topClaim.id, topClaim.id, []);
+    //debugger;
   }
 
   buildContextState(topId, parentClaimId, ancestors) {
     const childEdges = this.getChildEdges(parentClaimId, ancestors);
     const childContexts = [];
+    const childScores = [];
 
     for (const edge of childEdges) {
       const childAncestors = ancestors.slice();
@@ -56,7 +58,7 @@ class App extends Component {
       id: "",
       topId: topId,
       childId: parentClaimId,
-      children: []
+      children: [],
     }
 
     contextState.id = ancestors.join("/")
@@ -66,26 +68,32 @@ class App extends Component {
     contextState.id += parentClaimId
 
     for (const childContext of childContexts) {
+      childScores.push(childContext.score);
       contextState.children.push({
         id: childContext.id,
         childId: childContext.childId
       });
     }
     this.state.contextStates.push(contextState);
+
+    const score = ReasonScore.calculateReasonScore(parentClaimId, childEdges, childScores)
+    contextState.score = score;
+
+
     return contextState;
   }
 
-  getClaimData(id) {
-    const claim = this.state.claims.filter(claim => claim.id === id)[0];
+  getViewModel(contextState){
+    const claim = this.state.claims.filter(claim => claim.id === contextState.childId)[0];
 
-    const claimData = {
+    const claimViewModel = {
       claim: claim,
-      ancestors: []
-    };
+      children: contextState.children,
+      contextState: contextState
+    }
 
-    claimData.renderChildren = () => this.renderChildren(claimData);
-
-    return claimData;
+    claimViewModel.renderChildren = () => this.renderChildren(contextState);
+    return claimViewModel;
   }
 
   getChildEdges(parentId, ancestors) {
@@ -95,18 +103,15 @@ class App extends Component {
     );
   }
 
-  renderChildren(parentClaimData) {
-    const parentClaim = parentClaimData.claim;
-    const childEdges = this.getChildEdges(parentClaim.id, parentClaimData.ancestors)
-    if (childEdges.length > 0
+  renderChildren(parentContextState) {
+    if (parentContextState.children.length > 0
     ) {
-      const renderedChildren = childEdges.map((edge, step) => {
-        const childData = this.getClaimData(edge.childId);
-        childData.ancestors = parentClaimData.ancestors.slice();
-        childData.ancestors.push(parentClaim.id);
+      const renderedChildren = parentContextState.children.map((child) => {
+        const childContext = this.state.contextStates.filter(cs => cs.id === child.id)[0];
+        const childViewModel = this.getViewModel(childContext);
         return (
-          <li key={childData.claim.id}>
-            {this.renderClaim(childData)}
+          <li key={childViewModel.claim.id}>
+            {this.renderClaim(childViewModel)}
           </li>
         );
       });
@@ -120,19 +125,19 @@ class App extends Component {
     }
   }
 
-  renderClaim(claimData) {
+  renderClaim(claimViewModel) {
     return (
       <Claim
-        claimData={claimData}
+      claimViewModel={claimViewModel}
       />
     );
   }
 
   render() {
-    const claimData = this.getClaimData(this.props.claimId)
+    const claimViewModel = this.getViewModel(this.state.contextStates.filter(cs => cs.id === this.props.claimId)[0])
     return (
       <div className="App">
-        {this.renderClaim(claimData)}
+        {this.renderClaim(claimViewModel)}
       </div>
     );
   }
