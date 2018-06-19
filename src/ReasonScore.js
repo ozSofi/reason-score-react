@@ -20,7 +20,7 @@ class ReasonScore {
             //Process Truth child claims
             if (edge.affects === "truth") {
                 let weight = 0;
-                if (edge.reversable){
+                if (edge.reversable) {
                     weight = childScore.score * childScore.relevance;
                 } else {
                     weight = Math.max(0, childScore.score) * childScore.relevance;
@@ -36,9 +36,10 @@ class ReasonScore {
             //Process Relevance child claims
             if (edge.affects === "relevance") {
                 if (edge.pro) {
-                    score.relevance *= 1 + childScore.score
+                    score.relevance *= 1 + childScore.score;
+                    childScore.display = "X" + (1 + childScore.score);
                 } else {
-                    score.relevance *= 1 - (childScore.score / 2)
+                    score.relevance *= 1 - (childScore.score / 2);
                 }
             }
 
@@ -49,7 +50,9 @@ class ReasonScore {
         } else {
             score.score = score.strengthTotal / score.weightTotal;
         }
-        
+
+        score.display = Math.round(score.score * 100) + "%";
+
         return score;
     }
 }

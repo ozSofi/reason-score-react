@@ -5,7 +5,7 @@ import ReasonScore from './ReasonScore.js';
 
 function Claim(props) {
   return (
-    <div>{Math.round(props.claimViewModel.contextState.score.score*100)}%  {props.claimViewModel.claim.content}
+    <div>{props.claimViewModel.contextState.score.display}  {props.claimViewModel.claim.content}
       {props.claimViewModel.renderChildren()}
     </div>
   );
