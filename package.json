@@ -2,6 +2,7 @@
   "name": "reason-score-react",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://reasonscore.github.io/reason-score-react/build",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "react": "^16.4.0",
