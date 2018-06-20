@@ -5,7 +5,8 @@ import ReasonScore from './ReasonScore.js';
 
 function Claim(props) {
   return (
-    <div>{props.claimViewModel.contextState.score.display}  {props.claimViewModel.claim.content}
+    <div>{props.claimViewModel.contextState.score.display} &nbsp;
+      {props.claimViewModel.claim.content}
       {props.claimViewModel.renderChildren()}
     </div>
   );
@@ -40,7 +41,6 @@ class App extends Component {
     //Build ContextState
     const topClaim = this.state.claims.filter(claim => claim.id === this.props.claimId)[0];
     this.buildContextState(topClaim.id, topClaim.id, []);
-    //debugger;
   }
 
   buildContextState(topId, parentClaimId, ancestors) {

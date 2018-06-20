@@ -17,30 +17,44 @@ class ReasonScore {
 
         for (let edge of childEdges) {
             const childScore = childScores.filter(s => s.id === edge.childId)[0];
+
             //Process Truth child claims
             if (edge.affects === "truth") {
-                let weight = 0;
+
                 if (edge.reversable) {
-                    weight = childScore.score * childScore.relevance;
+                    childScore.weight = childScore.score * childScore.relevance;
                 } else {
-                    weight = Math.max(0, childScore.score) * childScore.relevance;
+                    childScore.weight = Math.max(0, childScore.score) * childScore.relevance;
                 }
-                score.weightTotal += weight;
+                score.weightTotal += childScore.weight;
+
                 if (edge.pro) {
-                    score.strengthTotal += weight * childScore.score;
+                    childScore.strength = childScore.weight * childScore.score;
                 } else {
-                    score.strengthTotal += weight * -childScore.score;
+                    childScore.strength = childScore.weight * -childScore.score;
                 }
+
+                score.strengthTotal += childScore.strength;
+
+                childScore.display = Math.round(childScore.weight * 100) * (edge.pro?1:-1) + "%"
+                // childScore.display += " ("
+                //     + childScore.strengthTotal.toString().substring(0,4) + ":" 
+                //     + childScore.weightTotal.toString().substring(0,4) + ":"
+                //     + childScore.strength.toString().substring(0,4) + ":"
+                //     + childScore.weight.toString().substring(0,4) + ":"
+                //     + childScore.relevance.toString().substring(0,4)
+                //    + ")";
             }
 
             //Process Relevance child claims
             if (edge.affects === "relevance") {
                 if (edge.pro) {
-                    score.relevance *= 1 + childScore.score;
-                    childScore.display = "X" + (1 + childScore.score);
+                    childScore.relevance = 1 + childScore.score;
                 } else {
-                    score.relevance *= 1 - (childScore.score / 2);
+                    childScore.relevance = 1 - (childScore.score / 2);
                 }
+                score.relevance *= childScore.relevance;
+                childScore.display = "X" + childScore.relevance;
             }
 
         }
