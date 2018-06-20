@@ -7,7 +7,7 @@
 /coverage
 
 # production
-/build
+#/build //We want to commit build so we can use github pages
 
 # misc
 .DS_Store
