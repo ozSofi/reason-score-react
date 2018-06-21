@@ -4,8 +4,8 @@ import data from './data';
 
 function Claim(props) {
   return (
-    <div onClick={() => props.claimViewModel.clicked()}>{props.claimViewModel.contextState.score.display} &nbsp;
-      {props.claimViewModel.claim.content}
+    <div><span onClick={props.claimViewModel.clicked}>{props.claimViewModel.contextState.score.display} &nbsp;
+    {props.claimViewModel.claim.content}</span>
       {props.claimViewModel.renderChildren()}
     </div>
   );
@@ -72,8 +72,8 @@ class App extends Component {
   clicked(id) {
     const transaction = {
       claims: [
-        { id: "1", content: "*************** test Update success 1 *****************" },
-        { id: id, content: "updated" }
+        { id: id, content: "updated" },
+        //{ id: "1.1", content: "*************** test Update success 2 *****************" }
       ]
     }
 
@@ -87,9 +87,6 @@ class App extends Component {
     return (
       <div className="App">
         {this.renderClaim(claimViewModel)}
-        <button onClick={this.clicked}>
-          test
-        </button>
       </div>
     );
   }
