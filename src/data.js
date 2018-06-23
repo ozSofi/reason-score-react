@@ -1,27 +1,9 @@
-import firebase from 'firebase';
 import ReasonScore from './ReasonScore';
 
 
 class Data {
 
     constructor(setState, dataConfig) {
-        if (dataConfig === undefined) {
-            dataConfig = {
-                apiKey: "AIzaSyBmu9Lhj9Stp8dhamvCA4oi16o_jU4qnQM",
-                authDomain: "reason-score.firebaseapp.com",
-                databaseURL: "https://reason-score.firebaseio.com",
-                projectId: "reason-score",
-                storageBucket: "reason-score.appspot.com",
-                messagingSenderId: "403624872089"
-            };
-        }
-
-        //Firebase singleton
-        if (window.firebase === undefined) {
-            window.firebase = firebase.initializeApp(dataConfig);
-        }
-
-        this.firebase = window.firebase;
         this.setState = setState;
 
         this.state = {

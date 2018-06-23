@@ -20,9 +20,6 @@ class App extends Component {
     // Build ContextState
     const topClaim = this.state.claims.filter(claim => claim.id === this.props.claimId)[0];
     this.data.buildContextState(topClaim.id, topClaim.id, []);
-
-    //Dont forget to remove this
-    this.clicked = this.clicked.bind(this);
   }
 
   getViewModel(contextState) {
