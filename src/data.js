@@ -2,104 +2,123 @@ import ReasonScore from './ReasonScore';
 
 
 class Data {
+  constructor(setState) {
+    this.setState = setState;
+    this.topClaimId = 'qVW5afkgWU4M';
 
-    constructor(setState, dataConfig) {
-        this.setState = setState;
+    this.data = {
+      items: {
+        qVW5afkgWU4M: { id: 'qVW5afkgWU4M', type: 'claim', content: 'Tabs are better than spaces', ver: 'qVW5zS9hcEL2', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
+        qVWqGQPwOnfP: { id: 'qVWqGQPwOnfP', type: 'claim', content: 'Tabs require fewer characters', ver: 'qVWwiw4JMmSJ', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
+        qVWwNH61JLpe: { id: 'qVWwNH61JLpe', type: 'argument', parent: 'qVW5afkgWU4M', child: 'qVWqGQPwOnfP', scope: 'qVW5afkgWU4M', pro: true, affects: 'truth', trans: 'qVW5zS9hcELl', ver: 'qVW5zS9hcEL2', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
+        qVW5zS9hcEL2: { id: 'qVW5afkgWU4M', history: true, type: 'claim', content: 'Tabs are better than spaces', trans: 'qVW5zS9hcELl', ver: 'qVW5zS9hcEL2', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
+        qVWwiw4JMmSJ: { id: 'qVWqGQPwOnfP', history: true, type: 'claim', content: 'Tabs require fewer characters', trans: 'qVW5zS9hcELl', ver: 'qVWwiw4JMmSJ', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
+        qVWxPcNXnDU5: { id: 'qVWwNH61JLpe', history: true, type: 'argument', parent: 'qVW5afkgWU4M', child: 'qVWqGQPwOnfP', scope: 'qVW5afkgWU4M', pro: true, affects: 'truth', trans: 'qVW5zS9hcELl', ver: 'qVWxPcNXnDU5', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
+      }
+    };
 
-        this.state = {
-            claims: [
-                { id: '1', content: 'Tabs are better than spaces' },
-                { id: '1.1', content: 'Tabs require fewer characters' },
-                { id: '1.2', content: 'Developers that use spaces make more money' },
-                { id: '1.1.1', content: 'Acme is building small IOT devices so every character counts' },
-                { id: '1.2.1', content: 'John is looking for a high paying job' },
-                { id: 'acme', content: 'Should Acme standardize on tabs' },
-                { id: 'john', content: 'Should John learn to code with tabs' },
-            ],
-            edges: [
-                { id: "a", parentId: '1', childId: '1.1', pro: true, contextId: '1', affects: 'truth' },
-                { id: "b", parentId: '1', childId: '1.2', pro: false, contextId: '1', affects: 'truth' },
-                { id: "c", parentId: '1.1', childId: '1.1.1', pro: true, contextId: 'acme', affects: 'relevance' },
-                { id: "d", parentId: '1.2', childId: '1.2.1', pro: true, contextId: 'john', affects: 'relevance' },
-                { id: "e", parentId: 'acme', childId: '1', pro: true, contextId: 'acme', affects: 'truth' },
-                { id: "f", parentId: 'john', childId: '1', pro: true, contextId: 'john', affects: 'truth', reversable: true },
-            ],
-            contextStates: [],
-        };
+    this.state = {
+      vm: this.buildViewModel(this.topClaimId, this.topClaimId, []),
+      data: this.data
+    };
+  }
+
+  updateState() {
+    this.setState({
+      vm: this.buildViewModel(this.topClaimId, this.topClaimId, [])
+    });
+  }
+
+  getChildEdges(parent, ancestors) {
+    return Object.values(this.data.items).filter(edge =>
+      edge.parent === parent
+      && !edge.history
+      && (ancestors.includes(edge.scope)
+        || edge.scope === parent))
+  }
+
+  buildViewModel(topId, parentClaimId, ancestors) {
+    const childEdges = this.getChildEdges(parentClaimId, ancestors);
+    const childVms = [];
+    const childScores = [];
+
+    childEdges.forEach((edge) => {
+      const childAncestors = ancestors.slice();
+      childAncestors.push(parentClaimId);
+      childVms.push(this.buildViewModel(topId, edge.child, childAncestors));
+    });
+
+    const vm = {
+      id: '',
+      topId,
+      childId: parentClaimId,
+      children: [],
+    };
+
+    vm.id = ancestors.join('/');
+    if (vm.id.length > 0) {
+      vm.id += '/';
+    }
+    vm.id += parentClaimId;
+
+    childVms.forEach((childContext) => {
+      childScores.push(childContext.score);
+      vm.children.push({
+        id: childContext.id,
+        childId: childContext.childId,
+      });
+    });
+
+    //add everything in
+    vm.children = childVms;
+    vm.claim = this.data.items[parentClaimId];
+    vm.score = ReasonScore.calculateReasonScore(parentClaimId, childEdges, childScores);
+    vm.content = vm.claim.content;
+    vm.display = vm.score.display;
+    vm.onClick = () => this.onClick(vm);
+    return vm;
+  }
+
+  processTransaction(transactions) {
+    const transId = this.newId();
+    const items = this.data.items;
+    for (const trans of transactions) {
+      trans.ver = this.newId();
+      trans.type = 'act'
+      trans.trans = transId;
+      items[trans.id] = { ...items[trans.id], ...trans.new, ver: trans.ver, mod: new Date() };
+      items[trans.ver] = trans;
+      this.updateState();
+    }
+  }
+
+  onClick(vm) {
+    const trans = {
+      id: vm.claim.id,
+      act: 'update',
+      new: { content: 'Updated Text' },
+      old: vm.claim
     }
 
-    saveTransaction(transaction) {
-        const newState = {};
-        Object.keys(transaction).forEach(function (key) {
+    this.processTransaction([trans]);
+  }
 
-            const ids = [];
-            for (const transactionElement of transaction[key]) {
-                ids.push(transactionElement.id);
-            }
-
-            const newArray = [];
-            for (const element of this.state[key]) {
-                if (ids.includes(element.id)) {
-                    const transactionElement = transaction[key].filter(te => te.id == element.id)[0];
-                    newArray.push(Object.assign(element, transactionElement))
-                } else {
-                    newArray.push(element);
-                }
-            }
-
-            newState[key] = newArray;
-
-        }, this);
-
-        this.setState(newState);
+  newId() {
+    // take the current UTC date and convert to base 62
+    let decimal = new Date();
+    const s = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    let result = '';
+    while (decimal >= 1) {
+      result = s[(decimal - (62 * Math.floor(decimal / 62)))] + result;
+      decimal = Math.floor(decimal / 62);
     }
 
-    buildContextState(topId, parentClaimId, ancestors) {
-        const childEdges = this.getChildEdges(parentClaimId, ancestors);
-        const childContexts = [];
-        const childScores = [];
+    // Add 5 extra random characters in case multiple ids are creates at the same time
+    result += Array(5).join().split(',').map(() => s[(Math.floor(Math.random() * s.length))])
+      .join('');
 
-        childEdges.forEach((edge) => {
-            const childAncestors = ancestors.slice();
-            childAncestors.push(parentClaimId);
-            childContexts.push(this.buildContextState(topId, edge.childId, childAncestors));
-        });
-
-        const contextState = {
-            id: '',
-            topId,
-            childId: parentClaimId,
-            children: [],
-        };
-
-        contextState.id = ancestors.join('/');
-        if (contextState.id.length > 0) {
-            contextState.id += '/';
-        }
-        contextState.id += parentClaimId;
-
-        childContexts.forEach((childContext) => {
-            childScores.push(childContext.score);
-            contextState.children.push({
-                id: childContext.id,
-                childId: childContext.childId,
-            });
-        });
-        this.state.contextStates.push(contextState);
-
-        const score = ReasonScore.calculateReasonScore(parentClaimId, childEdges, childScores);
-        contextState.score = score;
-
-
-        return contextState;
-    }
-
-    getChildEdges(parentId, ancestors) {
-        return this.state.edges.filter(edge => edge.parentId === parentId
-            && (ancestors.includes(edge.contextId)
-                || edge.contextId === parentId));
-    }
-
+    return result;
+  }
 }
 
 export default Data;

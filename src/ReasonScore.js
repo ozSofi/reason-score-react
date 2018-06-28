@@ -15,7 +15,7 @@ class ReasonScore {
     }
 
     childEdges.forEach((edge) => {
-      const childScore = childScores.filter(s => s.id === edge.childId)[0];
+      const childScore = childScores.filter(s => s.id === edge.child)[0];
 
       // Process Truth child claims
       if (edge.affects === 'truth') {

@@ -1,91 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
 import data from './data';
-
-function Claim(props) {
-  return (
-    <div><span onClick={props.claimViewModel.clicked}>{props.claimViewModel.contextState.score.display} &nbsp;
-    {props.claimViewModel.claim.content}</span>
-      {props.claimViewModel.renderChildren()}
-    </div>
-  );
-}
+import Claim from './Claim';
+import History from './History';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.data = new data(this.setState.bind(this), props.dataConfig);
     this.state = this.data.state;
-
-    // Build ContextState
-    const topClaim = this.state.claims.filter(claim => claim.id === this.props.claimId)[0];
-    this.data.buildContextState(topClaim.id, topClaim.id, []);
   }
-
-  getViewModel(contextState) {
-    const claim = this.state.claims.filter(c => c.id === contextState.childId)[0];
-
-    const claimViewModel = {
-      claim,
-      children: contextState.children,
-      contextState,
-    };
-
-    claimViewModel.renderChildren = () => this.renderChildren(contextState);
-    claimViewModel.clicked = () => this.clicked(claim.id);
-    return claimViewModel;
-  }
-
-  renderChildren(parentContextState) {
-    if (parentContextState.children.length > 0
-    ) {
-      const renderedChildren = parentContextState.children.map((child) => {
-        const childContext = this.state.contextStates.filter(cs => cs.id === child.id)[0];
-        const childViewModel = this.getViewModel(childContext);
-        return (
-          <li key={childViewModel.claim.id}>
-            {this.renderClaim(childViewModel)}
-          </li>
-        );
-      });
-      return (
-        <ul className="rsChildrenContainer">
-          {renderedChildren}
-        </ul>
-      );
-    }
-    return (null);
-  }
-
-  renderClaim(claimViewModel) {
-    return (
-      <Claim
-        claimViewModel={claimViewModel}
-      />
-    );
-  }
-
-  //Dont forget to remove this
-  clicked(id) {
-    const transaction = {
-      claims: [
-        { id: id, content: "updated" },
-        //{ id: "1.1", content: "*************** test Update success 2 *****************" }
-      ]
-    }
-
-    this.data.saveTransaction(transaction);
-  }
-
 
   render() {
-    const claim = this.state.contextStates.filter(cs => cs.id === this.props.claimId)[0];
-    const claimViewModel = this.getViewModel(claim);
     return (
-      <div className="App">
-        {this.renderClaim(claimViewModel)}
+      <div>
+        <Claim class="debate" vm={this.state.vm} />
+        <History data={this.state.data} />
       </div>
-    );
+    )
   }
 }
 
