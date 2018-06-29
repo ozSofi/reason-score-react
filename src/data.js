@@ -2,18 +2,15 @@ import ReasonScore from './ReasonScore';
 
 
 class Data {
-  constructor(setState) {
+  constructor(setState, topClaimId) {
     this.setState = setState;
-    this.topClaimId = 'qVW5afkgWU4M';
+    this.topClaimId = topClaimId;
 
     this.data = {
       items: {
         qVW5afkgWU4M: { id: 'qVW5afkgWU4M', type: 'claim', content: 'Tabs are better than spaces', ver: 'qVW5zS9hcEL2', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
         qVWqGQPwOnfP: { id: 'qVWqGQPwOnfP', type: 'claim', content: 'Tabs require fewer characters', ver: 'qVWwiw4JMmSJ', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
         qVWwNH61JLpe: { id: 'qVWwNH61JLpe', type: 'argument', parent: 'qVW5afkgWU4M', child: 'qVWqGQPwOnfP', scope: 'qVW5afkgWU4M', pro: true, affects: 'truth', trans: 'qVW5zS9hcELl', ver: 'qVW5zS9hcEL2', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
-        qVW5zS9hcEL2: { id: 'qVW5afkgWU4M', history: true, type: 'claim', content: 'Tabs are better than spaces', trans: 'qVW5zS9hcELl', ver: 'qVW5zS9hcEL2', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
-        qVWwiw4JMmSJ: { id: 'qVWqGQPwOnfP', history: true, type: 'claim', content: 'Tabs require fewer characters', trans: 'qVW5zS9hcELl', ver: 'qVWwiw4JMmSJ', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
-        qVWxPcNXnDU5: { id: 'qVWwNH61JLpe', history: true, type: 'argument', parent: 'qVW5afkgWU4M', child: 'qVWqGQPwOnfP', scope: 'qVW5afkgWU4M', pro: true, affects: 'truth', trans: 'qVW5zS9hcELl', ver: 'qVWxPcNXnDU5', created: '2018-06-24T23:46:48.159Z', mod: '2018-06-24T23:46:48.159Z' },
       }
     };
 
@@ -43,7 +40,7 @@ class Data {
         || edge.scope === parent))
   }
 
-  buildViewModel(topId, parentClaimId, ancestors) {
+  buildViewModel(topId, parentClaimId, ancestors, selectedVm) {
     const childEdges = this.getChildEdges(parentClaimId, ancestors);
     const childVms = [];
     const childScores = [];
@@ -51,7 +48,7 @@ class Data {
     childEdges.forEach((edge) => {
       const childAncestors = ancestors.slice();
       childAncestors.push(parentClaimId);
-      childVms.push(this.buildViewModel(topId, edge.child, childAncestors));
+      childVms.push(this.buildViewModel(topId, edge.child, childAncestors, selectedVm));
     });
 
     const vm = {
@@ -81,7 +78,12 @@ class Data {
     vm.score = ReasonScore.calculateReasonScore(parentClaimId, childEdges, childScores);
     vm.content = vm.claim.content;
     vm.display = vm.score.display;
-    vm.onClick = () => this.onClick(vm);
+    if (selectedVm && vm.id === selectedVm.id) {
+      vm.selected = true
+    } else {
+      vm.onSelect = () => this.onSelect(vm);
+    }
+    vm.sendTransaction = this.sendTransaction.bind(this);
     return vm;
   }
 
@@ -104,15 +106,18 @@ class Data {
     }
   }
 
-  onClick(vm) {
-    const trans = {
-      id: vm.claim.id,
-      act: 'update',
-      new: { content: 'Updated Text' },
-      old: vm.claim
-    }
+  onSelect(vm) {
+    this.setState({
+      vm: this.buildViewModel(this.topClaimId, this.topClaimId, [], vm)
+    });
 
-    this.sendTransaction([trans]);
+    // const trans = {
+    //   id: vm.claim.id,
+    //   act: 'update',
+    //   new: { content: 'Updated Text' },
+    //   old: vm.claim
+    // }
+    // this.sendTransaction([trans]);
   }
 
   newId() {

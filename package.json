@@ -5,10 +5,10 @@
   "homepage": "http://reasonscore.github.io/reason-score-react/build",
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "firebase": "^5.0.4",
-    "react": "^16.4.0",
+    "firebase": "^5.2.0",
+    "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.1",
     "react-scripts": "1.1.4"
   },
   "scripts": {
@@ -21,9 +21,9 @@
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.9.1",
+    "eslint-plugin-react": "^7.10.0",
     "gh-pages": "^1.2.0"
   }
 }

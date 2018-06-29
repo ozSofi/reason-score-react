@@ -7,7 +7,7 @@ import History from './History';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.data = new data(this.setState.bind(this), props.dataConfig);
+    this.data = new data(this.setState.bind(this), props.claimId);
     this.state = this.data.state;
   }
 
