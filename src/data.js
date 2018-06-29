@@ -21,6 +21,12 @@ class Data {
       vm: this.buildViewModel(this.topClaimId, this.topClaimId, []),
       data: this.data
     };
+
+    //Set up singleton transaction processor
+    if (!window.ReasonScoreTransactionProcessors) {
+      window.ReasonScoreTransactionProcessors = [];
+    }
+    window.ReasonScoreTransactionProcessors.push(this.processTransaction.bind(this))
   }
 
   updateState() {
@@ -79,15 +85,21 @@ class Data {
     return vm;
   }
 
-  processTransaction(transactions) {
+  sendTransaction(transaction) {
+    for (const processTransaction of window.ReasonScoreTransactionProcessors) {
+      processTransaction(transaction)
+    }
+  }
+
+  processTransaction(transaction) {
     const transId = this.newId();
     const items = this.data.items;
-    for (const trans of transactions) {
-      trans.ver = this.newId();
-      trans.type = 'act'
-      trans.trans = transId;
-      items[trans.id] = { ...items[trans.id], ...trans.new, ver: trans.ver, mod: new Date() };
-      items[trans.ver] = trans;
+    for (const action of transaction) {
+      action.ver = this.newId();
+      action.type = 'act'
+      action.trans = transId;
+      items[action.id] = { ...items[action.id], ...action.new, ver: action.ver, mod: new Date() };
+      items[action.ver] = action;
       this.updateState();
     }
   }
@@ -100,7 +112,7 @@ class Data {
       old: vm.claim
     }
 
-    this.processTransaction([trans]);
+    this.sendTransaction([trans]);
   }
 
   newId() {
