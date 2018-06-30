@@ -12,18 +12,17 @@ function Claim(props) {
             </span>
             <Collapse in={vm.selected} mountOnEnter={true}>
                 <div>
-                    <well>
-                        <Editor vm={vm} />
-                    </well>
+                    <Editor vm={vm} />
                 </div>
             </Collapse>
-            {vm.children &&
-                <ul>
-                    {vm.children.map((child) => (
-                        <Claim key={child.id} vm={child} />
-                    ))}
-                </ul>
-            }
+            
+            <Collapse in={vm.children.length > 0} mountOnEnter={true}>
+                    <ul>
+                        {vm.children.map((child) => (
+                            <Claim key={child.id} vm={child} />
+                        ))}
+                    </ul>
+            </Collapse>
         </div>
     );
 }
