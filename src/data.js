@@ -40,15 +40,18 @@ class Data {
         || edge.scope === parent))
   }
 
-  buildViewModel(topId, parentClaimId, ancestors, selectedVm) {
-    const childEdges = this.getChildEdges(parentClaimId, ancestors);
+  buildViewModel(topId, parentClaimId, ancestors, conTop) {
+    const childArguments = this.getChildEdges(parentClaimId, ancestors);
     const childVms = [];
     const childScores = [];
 
-    childEdges.forEach((edge) => {
+    childArguments.forEach((argument) => {
       const childAncestors = ancestors.slice();
       childAncestors.push(parentClaimId);
-      childVms.push(this.buildViewModel(topId, edge.child, childAncestors, selectedVm));
+      const childVm = this.buildViewModel(topId, argument.child, childAncestors,
+        argument.pro? conTop : !conTop);
+      childVm.argument = argument;
+      childVms.push(childVm);
     });
 
     const vm = {
@@ -74,12 +77,15 @@ class Data {
 
     //add everything in
     vm.children = childVms;
+    vm.conTop = conTop;
+    vm.className = 'claim'+ (vm.conTop? ' con':' pro');
     vm.claim = this.data.items[parentClaimId];
-    vm.score = ReasonScore.calculateReasonScore(parentClaimId, childEdges, childScores);
+    vm.score = ReasonScore.calculateReasonScore(parentClaimId, childArguments, childScores);
     vm.content = vm.claim.content;
     vm.display = vm.score.display;
-    if (selectedVm && vm.id === selectedVm.id) {
+    if (this.selectedVm && vm.id === this.selectedVm.id) {
       vm.selected = true
+      vm.unSelect = () => this.onSelect();
     } else {
       vm.onSelect = () => this.onSelect(vm);
     }
@@ -107,17 +113,10 @@ class Data {
   }
 
   onSelect(vm) {
+    this.selectedVm = vm;
     this.setState({
-      vm: this.buildViewModel(this.topClaimId, this.topClaimId, [], vm)
+      vm: this.buildViewModel(this.topClaimId, this.topClaimId, [])
     });
-
-    // const trans = {
-    //   id: vm.claim.id,
-    //   act: 'update',
-    //   new: { content: 'Updated Text' },
-    //   old: vm.claim
-    // }
-    // this.sendTransaction([trans]);
   }
 
   newId() {

@@ -1,19 +1,22 @@
 import React from 'react';
 import Editor from './Editor';
+import { Collapse } from 'react-bootstrap';
 
 function Claim(props) {
     const vm = props.vm;
     return (
-        <div className='claim'>
+        <div className={vm.className}>
             <span onClick={vm.onSelect}>
                 {vm.display} &nbsp;
                 {vm.content}
             </span>
-
-            {vm.selected &&
-                <Editor vm={vm} />
-            }
-
+            <Collapse in={vm.selected} mountOnEnter={true}>
+                <div>
+                    <well>
+                        <Editor vm={vm} />
+                    </well>
+                </div>
+            </Collapse>
             {vm.children &&
                 <ul>
                     {vm.children.map((child) => (
