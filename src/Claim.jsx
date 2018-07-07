@@ -19,7 +19,9 @@ function Claim(props) {
             <Collapse in={vm.children.length > 0} mountOnEnter={true}>
                     <ul>
                         {vm.children.map((child) => (
-                            <Claim key={child.id} vm={child} />
+                            <span key={child.argument.ver}>
+                            <Claim  vm={child} />*{child.argument.ver}*
+                            </span>
                         ))}
                     </ul>
             </Collapse>
