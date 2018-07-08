@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <div>
         <Claim class="debate" vm={this.state.vm} />
-        <History data={this.state.data} />
+        <History state={this.state} data ={this.data}/>
       </div>
     )
   }
