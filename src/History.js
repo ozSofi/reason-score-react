@@ -15,7 +15,6 @@ function History(props) {
         props.vmb.updateState()
     }
 
-
     return (
         <div className='history'>
             {whens.reverse().map((history) => (

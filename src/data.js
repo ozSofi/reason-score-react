@@ -19,8 +19,6 @@ class Data {
     window.ReasonScoreTransactionProcessors.push(this.processTransaction.bind(this))
   }
 
-
-  
   notify() {
     this.notify();
   }
@@ -31,12 +29,9 @@ class Data {
       && new Date(claim.start) <= this.when
       && new Date(claim.end) > this.when
     )
-
     if (claims.length < 1) { debugger; }
-
     return claims[0];
   }
-
 
   getArguments(parent, ancestors, when) {
     return Object.values(this.data.items).filter(edge =>
@@ -46,7 +41,6 @@ class Data {
       && (ancestors.includes(edge.scope)
         || edge.scope === parent))
   }
-
 
   sendTransaction(transaction) {
     transaction.Id = this.newId();
@@ -64,7 +58,6 @@ class Data {
 
   processTransaction(transaction) {
     const items = this.data.items;
-
     for (const action of transaction) {
       items[action.ver] = { ...action.old, ...action.new, ver: action.ver, start: transaction.start, end: transaction.end };
       items[action.old.ver] = { ...action.old, end: transaction.start }
