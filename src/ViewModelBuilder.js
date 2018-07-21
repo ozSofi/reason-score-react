@@ -9,7 +9,7 @@ class ViewModelBuilder {
         this.state = {
             vm: this.buildViewModel(this.topClaimId, this.topClaimId, []),
             data: this.data
-          };
+        };
     }
 
     updateState() {
@@ -23,6 +23,34 @@ class ViewModelBuilder {
         this.setState({
             vm: this.buildViewModel(this.topClaimId, this.topClaimId, [])
         });
+    }
+
+    newChild(vm, con) {
+        var newClaim = {
+            type: "claim",
+            id: this.data.newId(),
+        };
+        var newArgument = {
+            type: "argument",
+            id: this.data.newId(),
+            parent: vm.claim.id,
+            child: newClaim.id,
+            scope: vm.claim.id,
+            con: con,
+        };
+        this.data.sendTransaction([
+            {
+                id: newClaim.id,
+                act: 'add',
+                new: newClaim,
+                old: {}
+            }, {
+                id: newArgument.id,
+                act: 'add',
+                new: newArgument,
+                old: {}
+            }
+        ]);
     }
 
     buildViewModel(topId, parentClaimId, ancestors, conTop) {
@@ -74,6 +102,8 @@ class ViewModelBuilder {
         } else {
             vm.onSelect = () => this.onSelect(vm);
         }
+        vm.increase = () => this.newChild(vm,false);
+        vm.decrease = () => this.newChild(vm,true);
         vm.sendTransaction = this.data.sendTransaction.bind(this.data);
         return vm;
     }
