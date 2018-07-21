@@ -25,10 +25,11 @@ class ViewModelBuilder {
         });
     }
 
-    newChild(vm, con) {
+    newChild(vm, pro) {
         var newClaim = {
             type: "claim",
             id: this.data.newId(),
+            content: "",
         };
         var newArgument = {
             type: "argument",
@@ -36,7 +37,7 @@ class ViewModelBuilder {
             parent: vm.claim.id,
             child: newClaim.id,
             scope: vm.claim.id,
-            con: con,
+            pro: pro,
         };
         this.data.sendTransaction([
             {
@@ -102,8 +103,8 @@ class ViewModelBuilder {
         } else {
             vm.onSelect = () => this.onSelect(vm);
         }
-        vm.increase = () => this.newChild(vm,false);
-        vm.decrease = () => this.newChild(vm,true);
+        vm.increase = () => this.newChild(vm,true);
+        vm.decrease = () => this.newChild(vm,false);
         vm.sendTransaction = this.data.sendTransaction.bind(this.data);
         return vm;
     }

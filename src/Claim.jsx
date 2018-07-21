@@ -1,30 +1,37 @@
 import React from 'react';
 import Editor from './Editor';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 function Claim(props) {
     const vm = props.vm;
     return (
         <div className={vm.className}>
-            <span onClick={vm.increase}>
+            <button onClick={vm.increase}>
                 +
-            </span>
-            <span onClick={vm.decrease}>
+            </button>
+            <button onClick={vm.decrease}>
                 -
-            </span>
-             <span onClick={vm.onSelect}>
+            </button>
+            <span onClick={vm.onSelect}>
                 {vm.display} &nbsp;
                 {vm.content}
             </span>
             {vm.selected &&
                 <Editor vm={vm} />
             }
-            
+
             {vm.children.length > 0 &&
-                    <ul>
+                <ul>
+                    <CSSTransitionGroup
+                        transitionName="animate-add-remove"
+                        transitionEnterTimeout={500}
+                        transitionLeaveTimeout={300}>
                         {vm.children.map((child) => (
-                            <Claim key={child.argument.ver}  vm={child} />
+                            <Claim key={child.argument.ver} vm={child} />
                         ))}
-                    </ul>
+                    </CSSTransitionGroup>
+
+                </ul>
             }
         </div>
     );

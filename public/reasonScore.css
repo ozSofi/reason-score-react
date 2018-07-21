@@ -1,0 +1,21 @@
+.animate-add-remove-enter {
+    max-height: 0;
+  }
+  
+  .animate-add-remove-enter.animate-add-remove-enter-active {
+    max-height: 100px;
+    transition: max-height 500ms ease-in;
+  }
+  
+  .animate-add-remove-leave {
+    max-height: 100px;
+  }
+  
+  .animate-add-remove-leave.animate-add-remove-leave-active {
+    max-height: 0;
+    transition: max-height 300ms ease-in;
+  }
+
+  .claim {
+      overflow: hidden;
+  }
