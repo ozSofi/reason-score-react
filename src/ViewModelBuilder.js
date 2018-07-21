@@ -44,12 +44,10 @@ class ViewModelBuilder {
                 id: newClaim.id,
                 act: 'add',
                 new: newClaim,
-                old: {}
             }, {
                 id: newArgument.id,
                 act: 'add',
                 new: newArgument,
-                old: {}
             }
         ]);
     }

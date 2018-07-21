@@ -43,12 +43,13 @@ class Data {
   }
 
   sendTransaction(transaction) {
-    transaction.Id = this.newId();
-    transaction.start = new Date().toJSON();
-    transaction.end = "3000-01-01T00:00:00.000Z";
+    var id = this.newId();
+    var start = new Date().toJSON();
+    //var end = "3000-01-01T00:00:00.000Z";
     for (const action of transaction) {
       action.ver = this.newId();
-      action.trans = transaction.id;
+      action.trans = id;
+      action.start = start;
     };
 
     for (const processTransaction of window.ReasonScoreTransactionProcessors) {
@@ -59,9 +60,11 @@ class Data {
   processTransaction(transaction) {
     const items = this.data.items;
     for (const action of transaction) {
-      items[action.ver] = { ...action.old, ...action.new, ver: action.ver, start: transaction.start, end: transaction.end };
-      items[action.old.ver] = { ...action.old, end: transaction.start }
-      this.when = new Date(transaction.start);
+      items[action.ver] = { ...action.old, ...action.new, ver: action.ver, start: action.start, end: "3000-01-01T00:00:00.000Z" };
+      if (action.old) {
+        items[action.old.ver] = { ...action.old, end: action.start }
+      }
+      this.when = new Date(action.start);
       this.notify();
     }
   }

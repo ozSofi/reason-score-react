@@ -1,21 +1,68 @@
-.animate-add-remove-enter {
-    max-height: 0;
-  }
-  
-  .animate-add-remove-enter.animate-add-remove-enter-active {
-    max-height: 100px;
-    transition: max-height 500ms ease-in;
-  }
-  
-  .animate-add-remove-leave {
-    max-height: 100px;
-  }
-  
-  .animate-add-remove-leave.animate-add-remove-leave-active {
-    max-height: 0;
-    transition: max-height 300ms ease-in;
-  }
+claim .claim {
+  position: relative;
+  border-radius: 1em;
+  background: #ECECEC;
+  padding: .25em;
+  padding-bottom: 2px;
+  min-height: 2.65em;
+  font-size: 100%;
+  z-index: 1;
+  margin: 0 10px 10px 10px;
+}
 
-  .claim {
-      overflow: hidden;
+claim .callout{
+  position: absolute;
+  bottom: 0px;
+  width: 30px;
+  height: 30px;
+  z-index: -1;
+}
+
+claim .pro .callout {
+  left: -10px;
+  fill: #c880ff;
+  transform: scaleX(-1);
+}
+
+claim .con .callout {
+  right: -10px;
+  fill: #ffa71a;
+}
+
+claim .claim-outer{
+  overflow: hidden;
+}
+
+claim .pro {
+  background-color: #c880ff;
+  color: white;
+  border-color: #c880ff;
+}
+
+claim .con {
+  background-color: #ffa71a;
+  color: white;
+  border-color: #ffa71a;
+}
+
+claim .animate-add-remove-enter {
+    overflow: hidden;
+    max-height: 0;
   }
+  
+  claim .animate-add-remove-enter.animate-add-remove-enter-active {
+  overflow: hidden;
+  max-height: 100px;
+  transition: max-height 500ms ease-in;
+}
+
+claim .animate-add-remove-leave {
+  overflow: hidden;
+  max-height: 100px;
+}
+  
+claim .animate-add-remove-leave.animate-add-remove-leave-active {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 500ms ease-in;
+}
