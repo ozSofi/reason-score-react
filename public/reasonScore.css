@@ -10,6 +10,17 @@ claim {
   overflow: visible;
 }
 
+claim .score{
+  display: block;
+  float: left;
+  font-size: 2em;
+  padding-right: .25em;
+  max-width: 10em;
+  transition: .5s;
+  overflow: hidden;
+  line-height: 1.1;
+}
+
 claim .claim-outer>ul{
   margin: 0 0 0 20px;
   width: 100%;
