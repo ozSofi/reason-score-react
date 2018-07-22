@@ -1,3 +1,25 @@
+claim {
+  line-height: 1.25;
+  max-width: 600px;
+  margin: auto;
+  position: relative;
+  font-size: 16px;
+  color: #555;
+  border: 1px lightgrey solid;
+  display: block;
+  overflow: visible;
+}
+
+claim .claim-outer>ul{
+  margin: 0 0 0 20px;
+  width: 100%;
+  padding: 0;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: white;
+  border-radius: 10px;
+}
+
 claim .claim {
   position: relative;
   border-radius: 1em;
@@ -27,10 +49,6 @@ claim .pro .callout {
 claim .con .callout {
   right: -10px;
   fill: #ffa71a;
-}
-
-claim .claim-outer{
-  overflow: hidden;
 }
 
 claim .pro {

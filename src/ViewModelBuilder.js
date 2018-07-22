@@ -38,6 +38,7 @@ class ViewModelBuilder {
             child: newClaim.id,
             scope: vm.claim.id,
             pro: pro,
+            affects: "truth"
         };
         this.data.sendTransaction([
             {
