@@ -8,17 +8,23 @@ claim {
   border: 1px lightgrey solid;
   display: block;
   overflow: visible;
+  padding: 10px;
 }
 
 claim .score{
   display: block;
   float: left;
-  font-size: 2em;
-  padding-right: .25em;
+  font-size: 2.3em;
+  padding-right: .2em;
   max-width: 10em;
   transition: .5s;
   overflow: hidden;
   line-height: 1.1;
+  padding-left: 10px;
+}
+.claim-inner {
+  min-height: 2.5em;
+  padding: 0px 0px 5px 10px;
 }
 
 claim .claim-outer>ul{
@@ -37,10 +43,49 @@ claim .claim {
   background: #ECECEC;
   padding: .25em;
   padding-bottom: 2px;
-  min-height: 2.65em;
   font-size: 100%;
   z-index: 1;
   margin: 0 10px 10px 10px;
+}
+
+.claim:hover > .increase,
+.claim:hover > .decrease {
+  opacity: 1;
+  transition: .5s;
+}
+
+.triangle {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  stroke: #ffffff;
+  stroke-width: .5;
+  fill: none;
+  top: -2px;
+  left: -5px;
+}
+
+.increase {
+  position: absolute;
+  font-size: 18px;
+  left: 7px;
+  cursor: pointer;
+  opacity: .1;
+}
+
+.decrease {
+  position: absolute;
+  font-size: 18px;
+  left: 9px;
+  top: 21px;
+  transform: rotate(180deg);
+  cursor: pointer;
+  opacity: .1;
+}
+
+.decrease .triangle {
+  top: 0px;
+  left: -7px;
 }
 
 claim .callout{
