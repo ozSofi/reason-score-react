@@ -9,23 +9,11 @@ function Claim(props) {
             <div className={vm.className}>
                 <span className={'increase'} onClick={vm.increase}>
                     +
-                <div className={'triangle'} >
-                    <svg viewBox="0 0 10 10">
-                        <g transform="translate(0,-294.35417)" >
-                            <path d="m 4.8895982,295.27338 c -0.4794418,0.0287 -0.9133838,0.32638 -1.1532985,0.79116 l -2.6686654,5.16581 c -0.54593511,1.05702 0.1364035,2.37819 1.2284884,2.37865 h 5.3373309 c 1.0925991,5.3e-4 1.7758376,-1.32114 1.2296454,-2.37865 l -2.6698225,-5.16581 c -0.2667947,-0.51678 -0.7705476,-0.82249 -1.3036783,-0.79116 z"/>
-                        </g>
-                    </svg>
-                </div>
+                    {Triangle()}
                 </span>
                 <span className={'decrease'}  onClick={vm.decrease}>
                     -
-                    <div className={'triangle'} >
-                    <svg viewBox="0 0 10 10">
-                        <g transform="translate(0,-294.35417)" >
-                            <path d="m 4.8895982,295.27338 c -0.4794418,0.0287 -0.9133838,0.32638 -1.1532985,0.79116 l -2.6686654,5.16581 c -0.54593511,1.05702 0.1364035,2.37819 1.2284884,2.37865 h 5.3373309 c 1.0925991,5.3e-4 1.7758376,-1.32114 1.2296454,-2.37865 l -2.6698225,-5.16581 c -0.2667947,-0.51678 -0.7705476,-0.82249 -1.3036783,-0.79116 z"/>
-                        </g>
-                    </svg>
-                </div>
+                    {Triangle()}
                 </span>
                 <div className={'claim-inner'}  onClick={vm.onSelect}>
                     <span className={`score`}>
@@ -66,7 +54,21 @@ function Claim(props) {
                 </svg>
             </div>
         );
-      }
+    }
+
+    function Triangle () {
+        return (
+            <div class="triangle">
+                <svg viewBox="0 0 20 15">
+                    <g>
+                        <path d="m 10,2 8,11 h -16 z"></path>
+                    </g>
+                </svg>
+            </div>
+        )
+    }
+
+      
 }
 
 export default Claim;
