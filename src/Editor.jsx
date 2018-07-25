@@ -52,7 +52,7 @@ class Editor extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} style={{padding: '10px'}}>
 
         <div className="form-group">
           <label htmlFor="content">Content</label>

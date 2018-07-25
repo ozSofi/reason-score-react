@@ -55,40 +55,30 @@ claim .claim {
 }
 
 .triangle {
-  width: 25px;
   position: absolute;
-  stroke: #ffffff;
-  stroke-width: .5;
+  cursor: pointer;
+  opacity: .1;
+  width: 25px;
+  height: 15px;
+  left: 0px;
   fill: none;
-  top: -2px;
-  left: -8px;
+  stroke: #ffffff;
+  stroke-width: 1;
   stroke-linejoin: round;
+  stroke-linecap: round;
 }
 
 .increase {
-  position: absolute;
-  font-size: 15px;
-  left: 9px;
-  top: 8px;
-  cursor: pointer;
-  opacity: .1;
-  font-weight: 600;
+  top: 9px;
 }
 
 .decrease {
-  position: absolute;
-  font-size: 15px;
-  left: 11px;
-  top: 22px;
+  top: 24px;
   transform: rotate(180deg);
-  cursor: pointer;
-  opacity: .1;
-  font-weight: 600;
 }
 
-.decrease .triangle {
-  top: 0px;
-  left: -10px;
+.decrease .v-bar {
+  opacity: 0;
 }
 
 claim .callout{

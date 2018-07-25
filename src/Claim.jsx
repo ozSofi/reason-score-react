@@ -7,14 +7,12 @@ function Claim(props) {
     return (
         <div className={'claim-outer'}>
             <div className={vm.className}>
-                <span className={'increase'} onClick={vm.increase}>
-                    +
+                <div className={'increase triangle'} onClick={vm.increase}>
                     {Triangle()}
-                </span>
-                <span className={'decrease'}  onClick={vm.decrease}>
-                    -
+                </div>
+                <div className={'decrease triangle'}  onClick={vm.decrease}>
                     {Triangle()}
-                </span>
+                </div>
                 <div className={'claim-inner'}  onClick={vm.onSelect}>
                     <span className={`score`}>
                         {vm.display}
@@ -58,13 +56,13 @@ function Claim(props) {
 
     function Triangle () {
         return (
-            <div class="triangle">
-                <svg viewBox="0 0 20 15">
-                    <g>
-                        <path d="m 10,2 8,11 h -16 z"></path>
-                    </g>
-                </svg>
-            </div>
+            <svg viewBox="0 0 25 15">
+                <g>
+                    <path d="M 12.5,2 23,13 H 2 Z" />
+                    <path d="M 15,8.5 H 10" />
+                    <path className={'v-bar'} d="M 12.5,11 V 6" />
+                </g>
+            </svg>
         )
     }
 
