@@ -56,11 +56,11 @@ function Claim(props) {
 
     function Triangle () {
         return (
-            <svg viewBox="0 0 25 15">
+            <svg viewBox="0 0 15 15">
                 <g>
-                    <path d="M 12.5,2 23,13 H 2 Z" />
-                    <path d="M 15,8.5 H 10" />
-                    <path className={'v-bar'} d="M 12.5,11 V 6" />
+                    <path d="M 7.5,2 13,7.5 V 13 H 2 V 7.5 ZZ" />
+                    <path d="M 10,8.5 H 5" />
+                    <path className={'v-bar'} d="M 7.5,11 V 6" />
                 </g>
             </svg>
         )
