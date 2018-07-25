@@ -20,7 +20,7 @@ claim .score{
   transition: .5s;
   overflow: hidden;
   line-height: 1.1;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 .claim-inner {
   min-height: 2.5em;
@@ -58,9 +58,8 @@ claim .claim {
   position: absolute;
   cursor: pointer;
   opacity: .1;
-  width: 25px;
+  width: 15px;
   height: 15px;
-  left: 0px;
   fill: none;
   stroke: #ffffff;
   stroke-width: 1;
