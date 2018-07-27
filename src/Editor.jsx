@@ -7,7 +7,7 @@ class Editor extends Component {
     this.state = {
       claim: { ...props.vm.claim }
     };
-    if (props.vm.argument){
+    if (props.vm.argument) {
       this.state.argument = { ...props.vm.argument };
     }
     this.vm = props.vm;
@@ -19,7 +19,7 @@ class Editor extends Component {
   handleChange(event) {
     const dest = event.target.id.split(".");
     const newState = {};
-    newState[dest[0]] = { ...event[dest[0]] };
+    newState[dest[0]] = { ...this.state[dest[0]] };
     newState[dest[0]][dest[1]] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     this.setState(newState);
   }
@@ -52,19 +52,27 @@ class Editor extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} style={{padding: '10px'}}>
+      <form onSubmit={this.handleSubmit} style={{ padding: '10px' }}>
 
         <div className="form-group">
           <label htmlFor="content">Content</label>
           <input type="text" className="form-control" id="claim.content" value={this.state.claim.content} onChange={this.handleChange} />
         </div>
-        <div className="checkbox">
-          {this.state.argument &&
+        {this.state.argument &&
+          <div >
             <label>
               <input type="checkbox" id="argument.pro" checked={this.state.argument.pro} onChange={this.handleChange} /> Pro Parent
-          </label>
-          }
-        </div>
+            </label>
+            <br />
+            <label>
+              Affects:
+              <select id="argument.affects" value={this.state.argument.affects} onChange={this.handleChange}>
+                <option value="truth">truth</option>
+                <option value="relevance">relevance</option>
+              </select>
+            </label>
+          </div>
+        }
         <button type="submit" value="Submit" className="btn btn-default">Submit</button>
         <button type="button" value="Cancel" className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
       </form>
