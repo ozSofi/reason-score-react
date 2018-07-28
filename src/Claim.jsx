@@ -15,7 +15,7 @@ function Claim(props) {
                 </div>
                 <div className={'claim-inner'}  onClick={vm.onSelect}>
                     <span className={`score`}>
-                        {vm.display}
+                        {vm.score.display}
                     </span>
                     <span>
                         {vm.content}

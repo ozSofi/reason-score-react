@@ -95,7 +95,7 @@ class ViewModelBuilder {
         vm.claim = this.data.getClaim(parentClaimId);
         vm.score = ReasonScore.calculateReasonScore(parentClaimId, childArguments, childScores);
         vm.content = vm.claim.content;
-        vm.display = vm.score.display;
+        //vm.display = vm.score.display;
         if (this.selectedVm && vm.id === this.selectedVm.id) {
             vm.selected = true
             vm.unSelect = () => this.onSelect();

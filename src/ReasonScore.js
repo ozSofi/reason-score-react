@@ -34,7 +34,7 @@ class ReasonScore {
 
         score.strengthTotal += childScore.strength;
 
-        childScore.display = `${Math.round(childScore.weight * 100) * (edge.pro ? 1 : -1)}%`;
+        childScore.display = `${Math.round(childScore.weight * 100)}%`;// * (edge.pro ? 1 : -1)}%`;
         // childScore.display += " ("
         //     + childScore.strengthTotal.toString().substring(0,4) + ":"
         //     + childScore.weightTotal.toString().substring(0,4) + ":"
