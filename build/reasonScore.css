@@ -132,3 +132,22 @@ claim .animate-add-remove-leave.animate-add-remove-leave-active {
   max-height: 0;
   transition: max-height 500ms ease-in;
 }
+
+.claim ul {
+  padding-left: 15px;
+}
+
+.historyConatiner {
+  overflow: auto;
+  height: 35px;
+}
+
+.history {
+  float: left;
+  width: 20px;
+  height: 20px;
+  background-color: lightgrey;
+  margin-right: 5px;
+  margin-top: 5px;
+  border-radius: 5px;
+}
