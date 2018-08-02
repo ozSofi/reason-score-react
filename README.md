@@ -17,4 +17,4 @@ Member of the [Canonical Debate Lab](http://github.com/canonical-debate-lab)
 1. Flexible data model so different front ends and features can be prototyped quickly
 1. Visual look can be easily changed to match host website.
 1. Users should be able to embed the HTML into their sites as a static HTML. They should also be able to activate it with Javascript if they want to. 
-1. The Reason Score Math should be easily understood so that it can be trusted
+1. The Reason Score math code should be easily understood so that it can be trusted
