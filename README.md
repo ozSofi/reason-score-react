@@ -1,6 +1,6 @@
 # Reason Score - in React
 A public super fact checking process.
-Lost facts limit us. If we can increase our common facts by even a small percentage human kind could accellerate exponentially. Reason Score is a process where all your facts are heard and you understand all their facts so we can act together.
+Lost facts limit us. If we can increase our common facts by even a small percentage human kind could accellerate exponentially. Reason Score is a process where all _your_ facts are heard and you understand all _their_ facts so _we_ can act together.
 
 [White Paper](https://github.com/ReasonScore/White-Paper)
 
