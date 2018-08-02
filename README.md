@@ -1,5 +1,6 @@
 # Reason Score - in React
-An public super fact checking process
+A public super fact checking process.
+Lost facts limit us. If we can increase our common facts by even a small percentage human kind could accellerate exponentially. Reason Score is a process where all your facts are heard and you understand all their facts so we can act together.
 
 [White Paper](https://github.com/ReasonScore/White-Paper)
 
@@ -16,3 +17,4 @@ Member of the [Canonical Debate Lab](http://github.com/canonical-debate-lab)
 1. Flexible data model so different front ends and features can be prototyped quickly
 1. Visual look can be easily changed to match host website.
 1. Users should be able to embed the HTML into their sites as a static HTML. They should also be able to activate it with Javascript if they want to. 
+1. The Reason Score Math should be easily understood so that it can be trusted
