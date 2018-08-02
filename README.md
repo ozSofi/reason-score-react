@@ -1,11 +1,14 @@
 # Reason Score - in React
 An public super fact checking process
 
-Member of the [Canonical Debate Lab](http://github.com/canonical-debate-lab)
+[White Paper](https://github.com/ReasonScore/White-Paper)
 
 [See it in action](https://reasonscore.github.io/reason-score-react/build)
 
+Member of the [Canonical Debate Lab](http://github.com/canonical-debate-lab)
+
 # Design Requirements
+1. Mobile First!
 1. Based on widgets that can be used on any website
 1. Works without a backend
 1. Limited set of libraries
