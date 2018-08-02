@@ -11,7 +11,7 @@ Member of the [Canonical Debate Lab](http://github.com/canonical-debate-lab)
 # Design Requirements
 1. Mobile First!
 1. Based on widgets that can be used on any website
-1. Works without a backend
+1. Progressive? HTML should be readable without CSS, HTML & CSS should be usable without Javascript, Javascript should be usable without a backend.
 1. Limited set of libraries
 1. Abstraced data management so it can be hooked up to multiple types of backends
 1. Flexible data model so different front ends and features can be prototyped quickly
